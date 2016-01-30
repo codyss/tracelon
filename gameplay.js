@@ -22,9 +22,6 @@ function play () {
 }
 
 function inform () {
-  newGame.players.forEach (function (item) {
-    console.log(item.info);
-  })
   console.log('Now assinging teams. \n Each player should come and access this prompt one by one, \n to see which team they are on');
   var playersObjs = newGame.players;
   var playersNames = playersObjs.map(function(playerO) {return playerO.name});
@@ -39,15 +36,15 @@ function inform () {
         console.log('Gaming!');
         play();
       } else {
+        //show the player's info for 3 seconds
         var seconds = 3;
         newGame.players.forEach(function(person) {
           if(person.name === answer.player_name) {
-            //show the player's info for 3 seconds
             console.log(person.info);
-            console.log('clearing in ' + seconds + ' seconds')
+            console.log('clearing in ' + seconds + ' seconds');
           }
         });
-        setTimeout(function () {inform();}, seconds * 1000);
+        setTimeout(function () {console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'); inform();}, seconds * 1000);
       }
   });
 }

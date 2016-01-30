@@ -83,8 +83,9 @@ Game.prototype.assignPlayers = function() {
       self.goodPlayers.push(player);
     }
   });
-  //Reshuffling so the order of names doesn't give away roles
+  //Reshuffling so the order of names doesn't give away roles. Will also set the starting position
   shuffleArray(self.players);
+  this.starter();
 };
 
 Game.prototype.informPlayers = function() {
@@ -103,8 +104,10 @@ Game.prototype.informPlayers = function() {
       self.badPlayers.forEach(function (badPlayer) {
         player.info += badPlayer.name + " is bad. ";
       })  
-    } else {
-      player.info = "You are Good.";
+    } else if (player.team === 'Good') {
+      player.info += " You are Good.";
+    } else if (player.hasLady === true) {
+      player.info += ' You have the Lady.';
     }
   })
 };
@@ -117,10 +120,8 @@ Game.prototype.showBoard = function() {
 
 Game.prototype.starter = function() {
   //Assigns the starter used a random number to each player. order from low to high for order
-  var self = this;
-  shuffleArray(self.players);
   this.players[0].isTurn = true;
-  this.players[1].hasLady = true;
+  this.players[this.players.length - 1].hasLady = true;
 };
 
 function shuffleArray(array) {
