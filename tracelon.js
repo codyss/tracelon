@@ -45,6 +45,8 @@ function Game () {
   this.goodWins = 0;
   this.badWins = 0;
   this.currentRejects = 0; //number of quest trials for current turn
+  this.questsComplete = 0; //number of quests completed
+  this.questers = []; //players on the current quest
 }
 
 Game.prototype.addPlayers = function(playerObj) {
@@ -121,6 +123,10 @@ Game.prototype.starter = function() {
   //Assigns the starter used a random number to each player. order from low to high for order
   this.players[0].isTurn = true;
   this.players[this.players.length - 1].hasLady = true;
+};
+
+Game.prototype.turnOver = function() {
+  this.players.push(this.players.shift());
 };
 
 function shuffleArray(array) {

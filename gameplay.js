@@ -22,30 +22,76 @@ var test = true;
 //10. Bad try to guess Merlin
 
 
+
+function goOnQuest () {
+  var votes = {success: 0, fail: 0};
+  console.log('Quest Approved! Time to journey!');
+  newGame.questers.forEach(function(each) {
+    inquirer.prompt([{
+      type: 'list',
+      //space bar to select multiple players
+      name: 'selection',
+      message: each.name + "how do you vote?",
+      choices: ['Success', 'Fail']
+    }], function (answer) {
+      if(answer.selection === 'Success') {
+        votes.success += 1;
+      } else {
+        votes.fail += 1;
+      }
+    });
+    console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+  });
+  if (votes.fail > 0) {
+    console.log('Quest Failed')
+    newGame.badWins += 1
+  } else {
+    console.log('Quest Succeeded')
+    newGame.goodWins += 1
+  }
+
+}
+
+
 function vote () {
   //simple version will use tallying of votes outside of the console
   //Use thumbs up to vote yay
   console.log('Time to vote on the quest\n' + "If you want this quest, put your thumb up \n" + "If you don't want this quest, put your thumb down\n");
-  
-
+  inquirer.prompt([{
+    type: 'list',
+    //space bar to select multiple players
+    name: 'selection',
+    message: 'Vote:',
+    choices: ['Accepted', 'Rejected']
+  }], function (answer) {
+    if(answer.selection === 'Accepted') {
+      //GO ON THE QUEST
+      goOnQuest();
+    } else {
+      //move the current player to the back of the line
+      newGame.turnOver();
+      chooseQuest();
+    }
+  });
   
 }
 
 
 function chooseQuest () {
   //Actual gameplay once set up
-  var questSize = trace.QUESTSIZES[newGame.gameSize];
+  var questSize = trace.QUESTSIZES[newGame.gameSize][newGame.questsComplete];
   var playersNames = newGame.players.map(function(playerO) {return playerO.name;});
   console.log(playersNames[0] + "'s turn. Who do you want to take on the quest? Pick " + questSize + " players for the quest.");
   inquirer.prompt([{
     type: 'checkbox',
     //space bar to select multiple players
     name: 'selection',
-    message: 'Time to start the game',
+    message: 'Pick:',
     choices: playersNames
   }], function (answer) {
     if(answer.selection.length === questSize) {
       //EVERYONE GETS TO PLAY PASS OR FAIL QUEST
+      newGame.questers = answer.selection;
       vote();
     } else {
       console.log('You need to choose ' + questSize + " player for the quest. You choose " + answer.selection.length + " players.")
@@ -124,11 +170,13 @@ function setup () {
 }
 
 
+//Set up a game object
+newGame = new Game();
+
 //Start the setup process
 setup();
 
-//Set up a game object
-newGame = new Game();
+
 
 
 
