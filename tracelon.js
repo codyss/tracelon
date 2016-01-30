@@ -42,6 +42,8 @@ function Game () {
   this.questsComplete = 0; //number of quests completed
   this.questers = []; //players on the current quest
   this.currentQuestVotes = {success: 0, fail: 0};
+  this.merlin;
+  this.hasLady;
 }
 
 
@@ -51,11 +53,11 @@ Game.prototype.addPlayers = function(playerObj) {
   var self = this;
   if(playerObj instanceof Player) {
     this.players.push(playerObj);
-    this.gameSize += 1
+    this.gameSize += 1;
   } else if (playerObj instanceof Array) {
     playerObj.forEach(function(player) {
       self.players.push(player);
-      self.gameSize += 1
+      self.gameSize += 1;
     })
   }
 };
@@ -111,7 +113,7 @@ Game.prototype.informPlayers = function() {
 
 Game.prototype.showBoard = function() {
   //Visual depiction of board - with status
-  output = 'Good Quest Wins: ' + this.goodWins + "\n" + 'Bad Quest Wins: ' + this.badWins + "\n" + 'Current trys: ' + this.currentRejects + "\n";
+  output = "Through " + this.questsComplete + ". \n" + 'Good Quest Wins: ' + this.goodWins + "\n" + 'Bad Quest Wins: ' + this.badWins + "\n" + 'Current trys: ' + this.currentRejects + "\n";
   process.stdout.write(output);
 };
 
@@ -119,6 +121,7 @@ Game.prototype.starter = function() {
   //Assigns the starter used a random number to each player. order from low to high for order
   this.players[0].isTurn = true;
   this.players[this.players.length - 1].hasLady = true;
+  this.hasLady = this.players[this.players.length - 1];
 };
 
 Game.prototype.turnOver = function() {

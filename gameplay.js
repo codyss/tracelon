@@ -18,6 +18,11 @@ function promInquirer (promptArrOfObj) {
 var test = true;
 
 
+function CLgame () {
+  //create CL game object to attach methods to
+}
+
+
 //Game Play
 //2. Player picks people to go on quest
 //3. Everyone votes to approve or reject the quest
@@ -67,7 +72,43 @@ function endOfQuest() {
   newGame.questsComplete += 1;
   newGame.turnOver();
   newGame.showBoard();
-  chooseQuest();
+  ladyOrQuest();
+}
+
+
+function ladyOrQuest () {
+  if (newGame.questsComplete >= 2) {
+    playLady();
+  } else {
+    chooseQuest();
+  }
+}
+
+
+function playLady() {
+  console.log(newGame.hasLady.name + " your turn to ask someone what team they are on.");
+  var playersNames = newGame.players.map(function(playerO) {return playerO.name;});
+  promInquirer([{
+        type: 'list',
+        name: 'selection',
+        message: "Who do you pick?",
+        choices: playersNames
+        }])
+    .then(function(choice) {
+      //add the team that the person is on the lady player's info
+      var infoToAdd = '';
+      var playerToInform = newGame.players.forEach(function (player) {
+        if(player.name === choice) {
+          return player;
+        }
+      })
+      infoToAdd += " " + player.name + " is " + player.team + ". ";
+      newGame.hasLady.info += infoToAdd;
+      newGame.hasLady.hasLady = false;
+      playerToInform.hasLady = true;
+      newGame.hasLady = playerToInform;
+      goOnQuest();
+    })
 }
 
 
@@ -202,23 +243,9 @@ setup();
 
 
 
-function promiseAddPlayer () {
-  //Set up the game with the players
-  promInquirer([{
-    type: 'input',
-    name: 'player_name',
-    message: 'Enter your name'
-  }]).then(function(answer) {
-    console.log(answer);
-  });
-}
-
-
-
-
 //FOR TESTING PURPOSES - SETTING UP GAME WITH 6 PLAYERS
 if(test) {
-  var names = ['Cody', 'Jay', 'Cindy', 'Hailey', 'Patrick', 'Dan'];
+  var names = ['Cody', 'Jai', 'Cindy', 'Hailey', 'Patrick', 'Dan'];
   for(var i = 0; i < 6; i++) {
     var ply = new Player(names[i]);
     newGame.addPlayers(ply);

@@ -12,3 +12,8 @@ Iterations:
 4) Twilio integration for gameplay via texts
 
 5) AR/VR and beyond...
+
+
+
+Use:
+CLI - Use test = true (line 18 of gameplay.js) to have Purple Trace team loaded in to start.
