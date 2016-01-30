@@ -1,7 +1,7 @@
 //Brainstorming for Avalon Trace
 
 
-//Game Play
+//Setup
 //Set the bad players, good players and Merlin
 //Inform bad players of each other
 //Inform Merlin of the bad players
@@ -83,29 +83,7 @@ Game.prototype.assignPlayers = function() {
       self.goodPlayers.push(player);
     }
   });
-  //OLD WAY UGLY NOT DYNAMIC WAY
-  // var bad_index1 = Math.floor(Math.random()*6);
-  // var bad_index2 = Math.floor(Math.random()*6);
-  // var merlin_index = Math.floor(Math.random()*6);
-  // while (bad_index2 === bad_index1) {
-  //   bad_index2 = Math.floor(Math.random()*6);
-  // }
-  // while (merlin_index === bad_index1 || merlin_index == bad_index2) {
-  //   merlin_index = Math.floor(Math.random()*6);   
-  // }
-  // this.players[bad_index1].team = "bad";
-  // this.badPlayers.push(this.players[bad_index1]);
-  // this.players[bad_index2].team = "bad";
-  // this.badPlayers.push(this.players[bad_index2]);
-  // this.players[merlin_index].team = "good";
-  // this.players[merlin_index].merlin = true;
-  // this.goodPlayers.push(this.players[merlin_index]);
-  // this.players.forEach(function(player) {
-  //   if(!player.team) {
-  //     player.team = 'good';
-  //     this.goodPlayers.push(player);
-  //   }
-  // });
+  shuffleArray(self.players);
 };
 
 Game.prototype.informPlayers = function() {
@@ -114,16 +92,18 @@ Game.prototype.informPlayers = function() {
   //Put this information in the Player's info attribute
   var self = this;
   this.players.forEach(function (player, index, array) {
-    if(player.team === 'bad') {
+    if(player.team === 'Bad') {
+      player.info +=  "You are bad. ";
       self.badPlayers.forEach(function (badPlayer) {
-        player.info +=  badPlayer.name + "is bad. ";
+        player.info +=  badPlayer.name + " is bad. ";
       })
     } else if (player.merlin === true) {
+      player.info +=  "You are Merlin. ";
       self.badPlayers.forEach(function (badPlayer) {
-        player.info += badPlayer.name + "is bad. ";
+        player.info += badPlayer.name + " is bad. ";
       })  
     } else {
-      player.info = "No Info Yet - Maybe if you get the Lady";
+      player.info = "You are Good.";
     }
   })
 };

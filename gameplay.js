@@ -4,6 +4,10 @@ var Player = trace.Player;
 var Game = trace.Game;
 
 
+
+//TEST MODE - true for test mode
+var test = true;
+
 // var newPlayer = new Player('Cody');
 // var game = new Game();
 // game.addPlayers(newPlayer);
@@ -18,6 +22,9 @@ function play () {
 }
 
 function inform () {
+  newGame.players.forEach (function (item) {
+    console.log(item.info);
+  })
   console.log('Now assinging teams. \n Each player should come and access this prompt one by one, \n to see which team they are on');
   var playersObjs = newGame.players;
   var playersNames = playersObjs.map(function(playerO) {return playerO.name});
@@ -25,10 +32,11 @@ function inform () {
   inquirer.prompt([{
     type: 'list',
     name: 'player_name',
-    message: 'Which player are you',
+    message: 'Which player are you?',
     choices: playersNames
   }], function (answer) {
       if(answer.player_name === 'Game Time!') {
+        console.log('Gaming!');
         play();
       } else {
         for(var person in newGame.players) {
@@ -37,16 +45,12 @@ function inform () {
             var seconds = 3;
             console.log(player.info);
             console.log('clearing in ' + seconds + ' seconds')
-            setTimeout(function () {clear(); inform();}, seconds * 1000);
+            setTimeout(function () {inform();}, seconds * 1000);
           }
         }
       }
-  })
+  });
 }
-
-
-setTimeout(function() {console.log('Test')}, 2000)
-
 
 function addPlayer () {
   //Set up the game with the players
@@ -57,7 +61,7 @@ function addPlayer () {
   }], function (answer) {
       var newPlayer = new Player(answer.player_name.trim());
       newGame.addPlayers(newPlayer);
-  })
+  });
 }
 
 
@@ -73,15 +77,17 @@ function setup () {
       //add a player then run setup again
       addPlayer();
       //addPlayer is not blocking... setTimeout being used, potentially change to a listener
-      setTimeout(function () {setup()}, 3000);
+      setTimeout(function () {setup();}, 3000);
       // setup();
+    } else if (newGame.players.length < 5) {
+      console.log('Minimum of 5 players');
+      setup();
     } else {
       //start the game
-      //Should count the number of players based on input and put into assing roles function
       //Assign roles
-      // newGame.assignPlayers();
+      newGame.assignPlayers();
       //Save roles into each player's info attribute
-      newGame.informPlayer();
+      newGame.informPlayers();
       //Go to inform prompt
       inform();
     }
@@ -94,3 +100,19 @@ setup();
 
 //Set up a game object
 newGame = new Game();
+
+
+
+//FOR TESTING PURPOSES - SETTING UP GAME WITH 6 PLAYERS
+if(test) {
+  var names = ['Cody', 'Jay', 'Cindy', 'Hailey', 'Patrick', 'Dan']
+  for(var i = 0; i < 6; i++) {
+    var ply = new Player(names[i]);
+    newGame.addPlayers(ply);
+  }
+}
+
+
+
+
+
