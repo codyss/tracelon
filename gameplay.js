@@ -2,6 +2,19 @@ var inquirer = require('inquirer');
 var trace = require('./tracelon.js');
 var Player = trace.Player;
 var Game = trace.Game;
+var Promise = require('bluebird');
+
+
+function promInquirer (promptArrOfObj) {
+  return new Promise(function (resolve, reject) {
+    inquirer.prompt(promptArrOfObj, function (answer) {
+      resolve(answer);
+    });
+  });
+}
+
+
+
 
 
 
@@ -24,32 +37,40 @@ var test = true;
 
 
 function goOnQuest () {
-  var votes = {success: 0, fail: 0};
   console.log('Quest Approved! Time to journey!');
-  newGame.questers.forEach(function(each) {
-    inquirer.prompt([{
-      type: 'list',
-      //space bar to select multiple players
-      name: 'selection',
-      message: each.name + "how do you vote?",
-      choices: ['Success', 'Fail']
-    }], function (answer) {
-      if(answer.selection === 'Success') {
-        votes.success += 1;
-      } else {
-        votes.fail += 1;
-      }
-    });
-    console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
-  });
-  if (votes.fail > 0) {
-    console.log('Quest Failed')
-    newGame.badWins += 1
+  if(newGame.currentQuestVotes.success + newGame.currentQuestVotes.fail === newGame.questers.length) {
+    endOfQuest();
   } else {
-    console.log('Quest Succeeded')
-    newGame.goodWins += 1
+    promInquirer([{
+        type: 'list',
+        name: 'selection',
+        message: each.name + "how do you vote?",
+        choices: ['Success', 'Fail']
+        }])
+      .then(function (answer) {
+         if(answer.selection === 'Success') {
+          newGame.currentQuestVotes.success += 1;
+        } else {
+          newGame.currentQuestVotes.fail += 1;
+        }
+        console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+        goOnQuest();
+      })
   }
+};
 
+function endOfQuest () {
+    if (newGame.currentQuestVotes.fail > 0) {
+    console.log('Quest Failed');
+    newGame.badWins += 1;
+    newGame.turnOver();
+    chooseQuest();
+  } else {
+    console.log('Quest Succeeded');
+    newGame.goodWins += 1;
+    newGame.turnOver();
+    chooseQuest()
+  }
 }
 
 
@@ -59,7 +80,6 @@ function vote () {
   console.log('Time to vote on the quest\n' + "If you want this quest, put your thumb up \n" + "If you don't want this quest, put your thumb down\n");
   inquirer.prompt([{
     type: 'list',
-    //space bar to select multiple players
     name: 'selection',
     message: 'Vote:',
     choices: ['Accepted', 'Rejected']
@@ -102,16 +122,20 @@ function chooseQuest () {
 
 function inform () {
   console.log('Now assinging teams. \n Each player should come and access this prompt one by one, \n to see which team they are on');
-  var playersNames = newGame.players.map(function(playerO) {return playerO.name;});
-  playersNames.push("Game Time!");
+  var options = newGame.players.map(function(playerO) {return playerO.name;});
+  options.push("Game Time!");
+  options.push("Add another player");
   inquirer.prompt([{
     type: 'list',
     name: 'player_name',
     message: 'Which player are you?',
-    choices: playersNames
+    choices: options
   }], function (answer) {
       if(answer.player_name === 'Game Time!') {
         chooseQuest();
+      } else if (answer.player_name === 'Add another player') {
+        //Allows chance to go back and add another player
+        setup();
       } else {
         //show the player's info for 3 seconds
         var seconds = 3;
@@ -170,12 +194,25 @@ function setup () {
 }
 
 
+
 //Set up a game object
 newGame = new Game();
 
 //Start the setup process
 setup();
 
+
+
+function promiseAddPlayer () {
+  //Set up the game with the players
+  promInquirer([{
+    type: 'input',
+    name: 'player_name',
+    message: 'Enter your name'
+  }]).then(function(answer) {
+    console.log(answer);
+  });
+}
 
 
 
@@ -191,5 +228,25 @@ if(test) {
 
 
 
+//Aync solution with inquirer - trying Promises instead
+// var prompts = Rx.Observable.create(function( obs ) {
+//   obs.onNext({
+//     type: 'list',
+//     name: 'selection',
+//     message: 'Game setup: Add a player or start game?',
+//     choices: ['Add Player', 'Everyone Added']
+//   });
+//   setTimeout(function () {
+//     obs.onNext({
+//     type: 'list',
+//     name: 'player_name',
+//     message: 'Which player are you?',
+//     choices: options
+//   });
+//     obs.onCompleted();
+//   });
+// });
+
+// inquirer.prompt(prompts);
 
 

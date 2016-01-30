@@ -47,7 +47,9 @@ function Game () {
   this.currentRejects = 0; //number of quest trials for current turn
   this.questsComplete = 0; //number of quests completed
   this.questers = []; //players on the current quest
+  this.currentQuestVotes = {success: 0, fail: 0};
 }
+
 
 Game.prototype.addPlayers = function(playerObj) {
   //Add a player to the game
@@ -128,6 +130,23 @@ Game.prototype.starter = function() {
 Game.prototype.turnOver = function() {
   this.players.push(this.players.shift());
 };
+
+
+Game.prototype.resetVotes = function() {
+  //sets vote tally back to 0, 0
+  this.currentQuestVotes = {success: 0, fail: 0};
+};
+
+Game.prototype.shufflePlayers = function() {
+  //game prototype method to shuffle the players
+   for (var i = this.players.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = this.players[i];
+        this.players[i] = this.players[j];
+        this.players[j] = temp;
+    }
+};
+
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
