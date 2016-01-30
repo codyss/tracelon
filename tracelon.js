@@ -83,6 +83,7 @@ Game.prototype.assignPlayers = function() {
       self.goodPlayers.push(player);
     }
   });
+  //Reshuffling so the order of names doesn't give away roles
   shuffleArray(self.players);
 };
 

@@ -39,15 +39,15 @@ function inform () {
         console.log('Gaming!');
         play();
       } else {
-        for(var person in newGame.players) {
+        var seconds = 3;
+        newGame.players.forEach(function(person) {
           if(person.name === answer.player_name) {
             //show the player's info for 3 seconds
-            var seconds = 3;
-            console.log(player.info);
+            console.log(person.info);
             console.log('clearing in ' + seconds + ' seconds')
-            setTimeout(function () {inform();}, seconds * 1000);
           }
-        }
+        });
+        setTimeout(function () {inform();}, seconds * 1000);
       }
   });
 }
