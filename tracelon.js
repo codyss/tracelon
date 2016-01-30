@@ -37,6 +37,7 @@ Player.prototype.showInfo = function() {
 
 Player.prototype.pickQuestMembers = function() {
   // body...
+
 };
 
 
@@ -130,4 +131,7 @@ Game.prototype.starter = function() {
 
 
 
-
+module.exports = {
+  Player: Player,
+  Game: Game
+}

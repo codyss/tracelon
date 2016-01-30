@@ -1,0 +1,25 @@
+{
+  "name": "tracelon",
+  "version": "1.0.0",
+  "description": "Purple Trace's Quest",
+  "main": "tracelon.js",
+  "scripts": {
+    "test": "nodemon --reporter spec test/*.test.js",
+    "start": "nodemon gameplay.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codyss/tracelon.git"
+  },
+  "author": "Purple Trace",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codyss/tracelon/issues"
+  },
+  "homepage": "https://github.com/codyss/tracelon#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "inquirer": "^0.11.4",
+    "mocha": "^2.4.5"
+  }
+}
