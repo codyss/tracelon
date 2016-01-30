@@ -72,8 +72,9 @@ function setup () {
     if(answer.selection === 'Add Player') {
       //add a player then run setup again
       addPlayer();
-      //addPlayer is not blocking... maybe turn into a promise to improve how it works
-      setup();
+      //addPlayer is not blocking... setTimeout being used, potentially change to a listener
+      setTimeout(function () {setup()}, 3000);
+      // setup();
     } else {
       //start the game
       //Should count the number of players based on input and put into assing roles function
