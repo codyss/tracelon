@@ -13,36 +13,34 @@ var Game = trace.Game;
 // })
 
 
-// function play (game) {
-//   //Actual gameplay once set up
-//   var choices = "" //Options for gameplay
-
-//   inquirer.prompt({
-//     type:'list'
-//   })
-// }
+function play () {
+  //Actual gameplay once set up
+}
 
 function inform () {
   console.log('Now assinging teams. \n Each player should come and access this prompt one by one, \n to see which team they are on');
   var playersObjs = newGame.players;
   var playersNames = playersObjs.map(function(playerO) {return playerO.name});
+  playersNames.push("Game Time!");
   inquirer.prompt([{
     type: 'list',
     name: 'player_name',
     message: 'Which player are you',
     choices: playersNames
   }], function (answer) {
-      //result {player_name: 'Cody'}
-      for(person in newGame.players) {
-        if(person.name === answer.player_name) {
-          //show the player's info for 3 seconds
-          var seconds = 3
-          console.log(player.info);
-          console.log('clearing in ' + seconds + ' seconds')
-          setTimeout(function () {clear(); inform();}, seconds * 1000);
+      if(answer.player_name === 'Game Time!') {
+        play();
+      } else {
+        for(var person in newGame.players) {
+          if(person.name === answer.player_name) {
+            //show the player's info for 3 seconds
+            var seconds = 3;
+            console.log(player.info);
+            console.log('clearing in ' + seconds + ' seconds')
+            setTimeout(function () {clear(); inform();}, seconds * 1000);
+          }
         }
       }
-      
   })
 }
 
