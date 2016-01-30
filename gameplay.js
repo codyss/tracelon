@@ -22,21 +22,26 @@ var Game = trace.Game;
 //   })
 // }
 
+function inform () {
+  //Inform the players of their roles
+  
+}
 
-//Inform the players of their roles
 
-// function player (game) {
-//   //Set up the game with the players
-//   inquirer.prompt(['Players enter their names or enter PLAY to start'], function (answer) {
-//     if (answer === 'PLAY') {
-//       play(game);
-//     } else {
-//       var newPlayer = new Player(answer);
-//       game.addPlayers(newPlayer);
-//       start(game);
-//     }
-//   })
-// }
+
+
+
+function addPlayer () {
+  //Set up the game with the players
+  inquirer.prompt([{
+    type: 'input',
+    name: 'player_name',
+    message: 'Enter your name'
+  }], function (answer) {
+      var newPlayer = new Player(answer.player_name.trim());
+      newGame.addPlayers(newPlayer);
+  })
+}
 
 
 function setup () {
@@ -49,7 +54,8 @@ function setup () {
   }], function (answer) {
     if(answer.selection === 'Add Player') {
       //add a player then run setup again
-
+      addPlayer();
+      console.log(newGame.players.slice(-1))      
       setup();
     } else {
       //start the game
@@ -61,8 +67,7 @@ function setup () {
 
 //Start the setup process
 setup();
+inform();
 
 //Set up a game object
 newGame = new Game();
-
-// start(newGame)
