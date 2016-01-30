@@ -6,8 +6,8 @@
 //Inform bad players of each other
 //Inform Merlin of the bad players
 //Create board with status
-//Game Play
 //1. Assign random starter, Lady to left of starter
+//Game Play
 //2. Player picks people to go on quest
 //3. Everyone votes to approve or reject the quest
 //4. Tally votes
@@ -30,10 +30,6 @@ function Player (name) {
   this.info = '';
 }
 
-Player.prototype.showInfo = function() {
-  //Show this players information
-  process.stdout.write(this.info);
-};
 
 Player.prototype.pickQuestMembers = function() {
   // body...
@@ -43,6 +39,7 @@ Player.prototype.pickQuestMembers = function() {
 
 function Game () {
   this.players = []; //Array of players
+  this.gameSize = 0;
   this.goodPlayers = []; //Array of good players
   this.badPlayers = []; //Array of bad players
   this.goodWins = 0;
@@ -56,9 +53,11 @@ Game.prototype.addPlayers = function(playerObj) {
   var self = this;
   if(playerObj instanceof Player) {
     this.players.push(playerObj);
+    this.gameSize += 1
   } else if (playerObj instanceof Array) {
     playerObj.forEach(function(player) {
       self.players.push(player);
+      self.gameSize += 1
     })
   }
 };
@@ -159,5 +158,6 @@ var QUESTSIZES = {
 
 module.exports = {
   Player: Player,
-  Game: Game
+  Game: Game,
+  QUESTSIZES: QUESTSIZES
 };
