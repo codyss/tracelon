@@ -14,10 +14,6 @@ function promInquirer (promptArrOfObj) {
 }
 
 
-
-
-
-
 //TEST MODE - true for test mode
 var test = true;
 
@@ -38,13 +34,13 @@ var test = true;
 
 function goOnQuest () {
   console.log('Quest Approved! Time to journey!');
-  if(newGame.currentQuestVotes.success + newGame.currentQuestVotes.fail === newGame.questers.length) {
+  if(newGame.questers.length === 0) {
     endOfQuest();
   } else {
     promInquirer([{
         type: 'list',
         name: 'selection',
-        message: each.name + "how do you vote?",
+        message: newGame.questers[0] + " how do you vote?",
         choices: ['Success', 'Fail']
         }])
       .then(function (answer) {
@@ -54,23 +50,24 @@ function goOnQuest () {
           newGame.currentQuestVotes.fail += 1;
         }
         console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n');
+        newGame.questers.shift();
         goOnQuest();
-      })
+      });
   }
 };
 
-function endOfQuest () {
-    if (newGame.currentQuestVotes.fail > 0) {
+function endOfQuest() {
+  if(newGame.currentQuestVotes.fail > 0) {
     console.log('Quest Failed');
     newGame.badWins += 1;
-    newGame.turnOver();
-    chooseQuest();
   } else {
     console.log('Quest Succeeded');
     newGame.goodWins += 1;
-    newGame.turnOver();
-    chooseQuest()
   }
+  newGame.questsComplete += 1;
+  newGame.turnOver();
+  newGame.showBoard();
+  chooseQuest();
 }
 
 
@@ -85,6 +82,8 @@ function vote () {
     choices: ['Accepted', 'Rejected']
   }], function (answer) {
     if(answer.selection === 'Accepted') {
+      //RESET TRY COUNT
+      newGame.currentRejects = 0;
       //GO ON THE QUEST
       goOnQuest();
     } else {
@@ -114,7 +113,7 @@ function chooseQuest () {
       newGame.questers = answer.selection;
       vote();
     } else {
-      console.log('You need to choose ' + questSize + " player for the quest. You choose " + answer.selection.length + " players.")
+      console.log('You need to choose ' + questSize + " player for the quest. You chose " + answer.selection.length + " players.")
       chooseQuest();
     }
   });

@@ -31,12 +31,6 @@ function Player (name) {
 }
 
 
-Player.prototype.pickQuestMembers = function() {
-  // body...
-
-};
-
-
 function Game () {
   this.players = []; //Array of players
   this.gameSize = 0;
@@ -117,7 +111,7 @@ Game.prototype.informPlayers = function() {
 
 Game.prototype.showBoard = function() {
   //Visual depiction of board - with status
-  output = 'Good Quest Wins: ' + this.goodWins + "\n" + 'Bad Quest Wins: ' + this.badWins + "\n" + 'Current trys: ' + this.currentRejects;
+  output = 'Good Quest Wins: ' + this.goodWins + "\n" + 'Bad Quest Wins: ' + this.badWins + "\n" + 'Current trys: ' + this.currentRejects + "\n";
   process.stdout.write(output);
 };
 
@@ -129,6 +123,7 @@ Game.prototype.starter = function() {
 
 Game.prototype.turnOver = function() {
   this.players.push(this.players.shift());
+  this.resetVotes();
 };
 
 
