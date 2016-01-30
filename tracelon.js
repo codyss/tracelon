@@ -55,7 +55,7 @@ Game.prototype.addPlayers = function(playerObj) {
   //Or add an array of players
   var self = this;
   if(playerObj instanceof Player) {
-    this.player.push(playerObj);
+    this.players.push(playerObj);
   } else if (playerObj instanceof Array) {
     playerObj.forEach(function(player) {
       self.players.push(player);
