@@ -23,8 +23,14 @@ var Game = trace.Game;
 // }
 
 function inform () {
-  //Inform the players of their roles
-  
+  inquirer.prompt([{
+    type: 'list',
+    name: 'player_name',
+    message: 'Which player are you'
+  }], function (answer) {
+      var newPlayer = new Player(answer.player_name.trim());
+      newGame.addPlayers(newPlayer);
+  })
 }
 
 
@@ -50,16 +56,21 @@ function setup () {
     type: 'list',
     name: 'selection',
     message: 'Game setup: Add a player or start game?',
-    choices: ['Add Player', 'Start Game']
+    choices: ['Add Player', 'Everyone Added']
   }], function (answer) {
     if(answer.selection === 'Add Player') {
       //add a player then run setup again
       addPlayer();
-      console.log(newGame.players.slice(-1))      
+      //addPlayer is not blocking... maybe turn into a promise to improve how it works
       setup();
     } else {
       //start the game
-      
+      //Assign roles
+      newGame.assignPlayers();
+      //Save roles into each player's info attribute
+      newGame.informPlayer();
+      //Go to inform prompt
+      inform();
     }
   })
 }
@@ -67,7 +78,6 @@ function setup () {
 
 //Start the setup process
 setup();
-inform();
 
 //Set up a game object
 newGame = new Game();
