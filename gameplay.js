@@ -77,7 +77,7 @@ function endOfQuest() {
 
 
 function ladyOrQuest () {
-  if (newGame.questsComplete >= 2) {
+  if (newGame.questsComplete >= 1) {
     playLady();
   } else {
     chooseQuest();
@@ -90,24 +90,28 @@ function playLady() {
   var playersNames = newGame.players.map(function(playerO) {return playerO.name;});
   promInquirer([{
         type: 'list',
-        name: 'selection',
+        name: 'selection', 
         message: "Who do you pick?",
         choices: playersNames
         }])
     .then(function(choice) {
       //add the team that the person is on the lady player's info
-      var infoToAdd = '';
-      var playerToInform = newGame.players.forEach(function (player) {
-        if(player.name === choice) {
-          return player;
+      var playerToInform;
+      for (var i = 0; i < newGame.players.length; i++) {
+        if (newGame.players[i].name === choice.selection) {
+          playerToInform = newGame.players[i]; 
         }
-      })
-      infoToAdd += " " + player.name + " is " + player.team + ". ";
+      };
+      var infoToAdd = '';
+      infoToAdd += " " + playerToInform.name + " is " + playerToInform.team + ". ";
       newGame.hasLady.info += infoToAdd;
       newGame.hasLady.hasLady = false;
       playerToInform.hasLady = true;
       newGame.hasLady = playerToInform;
-      goOnQuest();
+      //Inform the person who ladied - can build simpler version
+      //SHOULD BE A SIMPLIFIED LADY VERSION
+      inform();
+      // chooseQuest();
     })
 }
 
