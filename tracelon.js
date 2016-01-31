@@ -41,6 +41,7 @@ function Game () {
   this.currentRejects = 0; //number of quest trials for current turn
   this.questsComplete = 0; //number of quests completed
   this.questers = []; //players on the current quest
+  this.questSize;  //sie of the current quest to come later when the quest starts
   this.currentQuestVotes = {success: 0, fail: 0};
   this.merlin;
   this.hasLady;
@@ -62,6 +63,10 @@ Game.prototype.addPlayers = function(playerObj) {
   }
 };
 
+Game.prototype.setQuestSize = function(first_argument) {
+  return this.questSize = QUESTSIZES[this.gameSize][this.questsComplete];
+};
+
 Game.prototype.assignPlayers = function() {
   //Set the bad players, good players and Merlin  
   //Dynamic Way
@@ -72,6 +77,7 @@ Game.prototype.assignPlayers = function() {
   self.players.forEach(function (player, index) {
     if(index === 0) {
       player.merlin = true;
+      self.merlin = player;
       player.team = 'Good';
       self.goodPlayers.push(player);
     } else if (index <= num_bad) {
