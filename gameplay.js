@@ -7,7 +7,7 @@ var Promise = require('bluebird');
 
 //TEST MODE - true for test mode
 //Auto loads members of Purple Trace to play
-var test = true;
+var test = false;
 
 
 function promInquirer (promptArrOfObj) {

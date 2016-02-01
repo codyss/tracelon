@@ -7,7 +7,7 @@
 //Inform Merlin of the bad players
 //Create board with status
 //1. Assign random starter, Lady to left of starter
-//Game Play
+//Game Play 
 //2. Player picks people to go on quest
 //3. Everyone votes to approve or reject the quest
 //4. Tally votes
@@ -21,7 +21,7 @@
 
 
 
-function Player (name) {
+function Player (name) {  
   this.name = name;
   this.team = null; //'Good' || 'Bad'
   this.merlin = false;
